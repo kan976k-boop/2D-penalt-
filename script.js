@@ -81,6 +81,20 @@ document.getElementById('start-btn').onclick = () => {
         showFeedback('Hile modu aktif', '#ffdb15');
     }
 
+    // Ryzo Super Cheat
+    if (state.name.toLowerCase() === 'ryzo') {
+        state.gold = 999999;
+        state.lives = 999999;
+        state.score = 0;
+        state.ballScale = 1.6;
+        state.keeperFactor = 0.6;
+        state.goldMultiplier = 2;
+        state.fireShotActive = true;
+        state.purchased = { extraLife: true, bigBall: true, slowKeeper: true, goldBall: true, fireShot: true };
+        els.ball.style.fontSize = '45px';
+        showFeedback('RYZO MODU: TÜM GÜÇLER AKTİF! ⚡', '#00ff88');
+    }
+
     updateUI();
 };
 
