@@ -92,7 +92,7 @@ document.getElementById('start-btn').onclick = () => {
         state.fireShotActive = true;
         state.purchased = { extraLife: true, bigBall: true, slowKeeper: true, goldBall: true, fireShot: true };
         els.ball.style.fontSize = '45px';
-        showFeedback('RYZO MODU: TÜM GÜÇLER AKTİF! ⚡', '#00ff88');
+        showFeedback('Ryzo ve Driperx hep ARKADAŞ OLCAK', '#00ff88', 5000);
     }
 
     updateUI();
@@ -270,12 +270,14 @@ function endGame() {
     saveScore(state.name, state.score);
 }
 
-function showFeedback(t, c) {
+function showFeedback(t, c, d = 1000) {
     const f = document.createElement('div');
     f.innerText = t; f.className = 'fade-up'; f.style.color = c;
     f.style.left = '50%'; f.style.top = '40%';
+    // Eğer süre uzunsa animasyonu ona göre ayarla
+    if (d > 1000) f.style.animation = `fadeUp ${d/1000}s forwards`;
     els.stadium.appendChild(f);
-    setTimeout(() => f.remove(), 1000);
+    setTimeout(() => f.remove(), d);
 }
 
 function reset() {
