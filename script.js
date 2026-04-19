@@ -11,7 +11,29 @@ const AudioEngine = {
     },
     kick() { this.play(160, 'sine', 0.15, 0.2); },
     whistle() { this.play(850, 'triangle', 0.4, 0.1); },
-    goal() { this.play(450, 'square', 0.6, 0.15); },
+    goal() { 
+        // Temel Gol Sesi
+        this.play(450, 'square', 0.6, 0.15); 
+        // Alkış Simülasyonu (Beyaz Gürültü)
+        this.applause();
+    },
+    applause() {
+        this.init(); if(!this.ctx) return;
+        const bufferSize = this.ctx.sampleRate * 1.5;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass'; filter.frequency.value = 1000;
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.2, this.ctx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 1.5);
+        noise.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
+        noise.start(); noise.stop(this.ctx.currentTime + 1.5);
+    },
     miss() { this.play(120, 'sawtooth', 0.5, 0.1); }
 };
 
@@ -54,7 +76,9 @@ document.getElementById('start-btn').onclick = () => {
     // Driperx Special Cheat
     if (state.name.toLowerCase() === 'driperx') {
         state.gold = 999999;
-        showFeedback('DRIPERX MODU AKTİF! 👑', '#ffdb15');
+        state.lives = 999999;
+        state.score = 0;
+        showFeedback('Hile modu aktif', '#ffdb15');
     }
 
     updateUI();
@@ -154,8 +178,8 @@ function shoot(e) {
         const bp = (tx/rect.width)*100;
         const dist = Math.abs(bp - 50);
         
-        // Daha dengeli kurtarma olasılığı (Merkez: %85, Köşeler: %45)
-        let saveProb = (0.85 - (dist/50)*0.4) * state.keeperFactor;
+        // Daha dengeli kurtarma olasılığı (Merkez: %65, Köşeler: %25)
+        let saveProb = (0.65 - (dist/50)*0.4) * state.keeperFactor;
         
         if (state.fireShotActive) saveProb *= 0.6; // Alevli şut hala zor ama imkansız değil
         if (state.power > 85) saveProb *= 0.8;    // Çok güçlü şutlar kaleciyi zorlar
