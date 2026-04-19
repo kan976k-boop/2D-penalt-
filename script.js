@@ -178,8 +178,8 @@ function shoot(e) {
         const bp = (tx/rect.width)*100;
         const dist = Math.abs(bp - 50);
         
-        // Daha dengeli kurtarma olasılığı (Merkez: %65, Köşeler: %25)
-        let saveProb = (0.65 - (dist/50)*0.4) * state.keeperFactor;
+        // "Altın Orta" Kurtarma Olasılığı (Merkez: %55, Köşeler: %20)
+        let saveProb = (0.55 - (dist/50)*0.35) * state.keeperFactor;
         
         if (state.fireShotActive) saveProb *= 0.6; // Alevli şut hala zor ama imkansız değil
         if (state.power > 85) saveProb *= 0.8;    // Çok güçlü şutlar kaleciyi zorlar
@@ -224,7 +224,8 @@ function check(bx, by, kx, jumpY) {
     const hDist = Math.abs(bp - kx);
     const vDist = Math.abs(by - (keeperTop + 30));
 
-    const saved = hDist < (6 * state.ballScale) && vDist < 60;
+    // Kurtarma alanı dengelendi (Ne çok geniş ne çok dar: 5.0)
+    const saved = hDist < (5.0 * state.ballScale) && vDist < 55;
 
     if (inGoal && !saved) {
         state.score += 10; 
