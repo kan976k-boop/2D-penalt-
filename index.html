@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro Penalty | Mega Market Update</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container" id="app-root">
+        <!-- Power Bar -->
+        <div id="power-container" class="power-bar-container hidden">
+            <div id="power-fill" class="power-bar-fill"></div>
+            <span class="power-label">GÜÇ</span>
+        </div>
+
+        <button id="fs-btn" class="fs-toggle">⛶</button>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="overlay">
+            <div class="glass-card">
+                <h1>PRO PENALTY</h1>
+                <p>Mega Market ve Yeni Güçler Geldi!</p>
+                <div class="input-group">
+                    <input type="text" id="player-name" placeholder="Oyuncu Adı" maxlength="15">
+                </div>
+                <button id="start-btn" class="primary-btn">MAÇI BAŞLAT</button>
+                <button id="leaderboard-btn" class="secondary-btn">SIRALAMA</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="hidden">
+            <div class="game-header">
+                <div class="stat-box">
+                    <span class="label">SKOR</span>
+                    <span id="current-score" class="value">0</span>
+                </div>
+                <div class="stat-box highlight">
+                    <span class="label">ALTIN</span>
+                    <span id="gold-count" class="value">0</span>
+                </div>
+                <div class="stat-box">
+                    <span class="label">HAK</span>
+                    <span id="lives" class="value">5</span>
+                </div>
+            </div>
+
+            <div class="ad-boards">
+                <div class="ad-track">
+                    <span>MEGA MARKET AÇILDI • YENİ GÜÇLENDİRMELER • ÇİFT ALTIN TOP • ALEVLİ ŞUT • </span>
+                    <span>MEGA MARKET AÇILDI • YENİ GÜÇLENDİRMELER • ÇİFT ALTIN TOP • ALEVLİ ŞUT • </span>
+                </div>
+            </div>
+
+            <div class="stadium" id="stadium">
+                <div class="grass-texture"></div>
+                <div class="pitch-lines"></div>
+                <div class="crowd"></div>
+                <div class="stadium-lights"></div>
+                <div id="confetti-container"></div>
+                
+                <div class="goal-area">
+                    <div class="goal-net"></div>
+                    <div class="goal-post"></div>
+                    <div id="goalkeeper" class="goalkeeper">
+                        <div class="head"></div>
+                        <div class="body">
+                            <div class="arm left"></div>
+                            <div class="arm right"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="ball" class="ball">
+                    <div class="trail"></div>
+                </div>
+                <div class="aim-guide" id="aim-guide"></div>
+            </div>
+
+            <div class="game-footer">
+                <button id="open-shop-btn" class="shop-trigger">🛒 MARKET</button>
+                <div class="controls-hint">Güçlü vur ve golünü at!</div>
+            </div>
+        </div>
+
+        <!-- Shop Screen (New Design) -->
+        <div id="shop-screen" class="overlay hidden">
+            <div class="shop-container">
+                <h2 class="shop-title">MARKET</h2>
+                <div class="shop-balance">
+                    Bakiye: <span id="shop-gold-count">0</span> 💰
+                </div>
+                
+                <div class="shop-scroll-area">
+                    <!-- Item 1 -->
+                    <div class="shop-card-item" onclick="buyItem('extraLife')">
+                        <div class="item-meta">
+                            <span class="item-heading">💖 +1 Hak</span>
+                            <span class="item-cost">50 Altın</span>
+                        </div>
+                        <button class="buy-action-btn">AL</button>
+                    </div>
+                    
+                    <!-- Item 2 -->
+                    <div class="shop-card-item" onclick="buyItem('bigBall')">
+                        <div class="item-meta">
+                            <span class="item-heading">⚽ Dev Top</span>
+                            <span class="item-cost">100 Altın</span>
+                        </div>
+                        <button class="buy-action-btn">AL</button>
+                    </div>
+                    
+                    <!-- Item 3 -->
+                    <div class="shop-card-item" onclick="buyItem('slowKeeper')">
+                        <div class="item-meta">
+                            <span class="item-heading">🧊 Yavaş Kaleci</span>
+                            <span class="item-cost">150 Altın</span>
+                        </div>
+                        <button class="buy-action-btn">AL</button>
+                    </div>
+
+                    <!-- Item 4 (New) -->
+                    <div class="shop-card-item" onclick="buyItem('goldBall')">
+                        <div class="item-meta">
+                            <span class="item-heading">💰 Altın Top (2X Altın)</span>
+                            <span class="item-cost">250 Altın</span>
+                        </div>
+                        <button class="buy-action-btn">AL</button>
+                    </div>
+
+                    <!-- Item 5 (New) -->
+                    <div class="shop-card-item" onclick="buyItem('fireShot')">
+                        <div class="item-meta">
+                            <span class="item-heading">🔥 Alevli Şut</span>
+                            <span class="item-cost">400 Altın</span>
+                        </div>
+                        <button class="buy-action-btn">AL</button>
+                    </div>
+                </div>
+                
+                <button id="close-shop-btn" class="shop-close-btn">KAPAT</button>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div id="leaderboard-screen" class="overlay hidden">
+            <div class="glass-card">
+                <h2>LİDERLİK</h2>
+                <div class="leaderboard-list" id="leaderboard-list"></div>
+                <button id="back-to-menu" class="secondary-btn">GERİ DÖN</button>
+            </div>
+        </div>
+
+        <!-- Game Over -->
+        <div id="game-over-screen" class="overlay hidden">
+            <div class="glass-card">
+                <h1 class="danger-text">OYUN BİTTİ</h1>
+                <div id="final-score" class="huge-text">0</div>
+                <button id="restart-btn" class="primary-btn">TEKRAR DENE</button>
+                <button id="main-menu-btn" class="secondary-btn">ANA MENÜ</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
